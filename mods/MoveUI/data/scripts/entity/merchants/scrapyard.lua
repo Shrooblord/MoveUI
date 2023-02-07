@@ -2,25 +2,38 @@ Scrapyard.updateServerOld = Scrapyard.updateServer
 
 include('data/scripts/lib/serialize')
 
+local ScrapyardPlus
+
+-- TODO: replace with the Workshop ID of MoveUI once you upload it
+if ModManager():find("ScrapyardPlus") then
+	ScrapyardPlus = true
+end
+
+-- compatibility with ScrapyardPlus 2023
+if ScrapyardPlus then
+    function Scrapyard.updateMoveUILicenses()
+        local Data, licenses
+
+        if Scrapyard.getData then
+            print("getting Scrapyard data...")
+            Data = Scrapyard.getData()
+            licenses = {}
+            for d in ipairs(Data) do
+                print("index: ".. d)
+                print("data: " .. Data[d])
+                print("facId: " .. Data[d].factionIndex)
+                print("license: " .. Data[d].license)
+                licenses[Data[d].factionIndex] = Data[d].license
+            end
+        end
+    end
+end
+
 function Scrapyard.updateServer(timeStep)
     local Data, licenses
 
-    -- compatibility with ScrapyardPlus 2023
-    if Scrapyard.getData then
-        print("getting Scrapyard data...")
-        local Data = Scrapyard.getData()
-        licenses = {}
-        for d in ipairs(Data) do
-            print("index: ".. d)
-            print("data: " .. Data[d])
-            print("facId: " .. Data[d].factionIndex)
-            print("license: " .. Data[d].license)
-            licenses[Data[d].factionIndex] = Data[d].license
-        end
-    else
-        Data = Scrapyard.secure()
-        licenses = Data["licenses"]
-    end
+    Data = Scrapyard.secure()
+    licenses = Data["licenses"]
 
     local x,y = Sector():getCoordinates()
     for factionIndex,duration in pairs(licenses) do

@@ -13,18 +13,18 @@ end
 -- compatibility with ScrapyardPlus 2023
 if ScrapyardPlus then
     -- this function runs INSTEAD OF Scrapyard.updateServer() defined below, because that function is already being shadowed by ScrapyardPlus
-    function Scrapyard.updateMoveUILicenses(timeStep)
+    function Scrapyard.updateMoveUILicenses(timeStep, scrapyardFactionIndex)
         local Data, licenses
 
         if Scrapyard.getData then
-            print("getting Scrapyard data...")
-            Data = Scrapyard.getData()
+            --print("\ngetting Scrapyard data for faction " .. scrapyardFactionIndex .. "...")
+            Data = Scrapyard.getData(scrapyardFactionIndex)
             licenses = {}
             for d in ipairs(Data) do
-                print("index: ".. d)
-                print("data: " .. serialize(Data[d]))
-                print("facId: " .. Data[d].factionIndex)
-                print("license: " .. Data[d].license)
+                --print("index: ".. d)
+                --print("data: " .. serialize(Data[d]))
+                --print("facId: " .. Data[d].factionIndex)
+                --print("license: " .. Data[d].license)
                 licenses[Data[d].factionIndex] = Data[d].license
             end
 

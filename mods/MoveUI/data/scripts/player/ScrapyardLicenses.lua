@@ -149,7 +149,7 @@ function ScrapyardLicenses.onPreRenderHud()
         end
 
         local InAllianceShip = false
-        if not player.craftIndex and not Entity(player.craftIndex) then return end
+        if (not player.craftIndex) or (not Entity(player.craftIndex)) then return end
         if player.index ~= Entity(player.craftIndex).factionIndex then
           InAllianceShip = true
         end

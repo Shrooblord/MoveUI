@@ -7,11 +7,13 @@ local ScrapyardPlus
 -- TODO: replace with the Workshop ID of MoveUI once you upload it
 if ModManager():find("ScrapyardPlus") then
 	ScrapyardPlus = true
+    include ("serialize")
 end
 
 -- compatibility with ScrapyardPlus 2023
 if ScrapyardPlus then
-    function Scrapyard.updateMoveUILicenses()
+    -- this function runs INSTEAD OF Scrapyard.updateServer() defined below, because that function is already being shadowed by ScrapyardPlus
+    function Scrapyard.updateMoveUILicenses(timeStep)
         local Data, licenses
 
         if Scrapyard.getData then
@@ -20,10 +22,27 @@ if ScrapyardPlus then
             licenses = {}
             for d in ipairs(Data) do
                 print("index: ".. d)
-                print("data: " .. Data[d])
+                print("data: " .. serialize(Data[d]))
                 print("facId: " .. Data[d].factionIndex)
                 print("license: " .. Data[d].license)
                 licenses[Data[d].factionIndex] = Data[d].license
+            end
+
+            local x,y = Sector():getCoordinates()
+            for factionIndex,duration in pairs(licenses) do
+                local faction = Faction(factionIndex)
+
+                if faction.isPlayer or faction.isAlliance then
+                    -- read current or init new
+                    local pLicenses = Scrapyard.GetFactionLicense(factionIndex)
+                    local time = round(duration - timeStep)
+                    if time <= 0 then
+                    time = nil
+                    end
+                    pLicenses[x][y] = time
+
+                    faction:setValue("MoveUI#Licenses", serialize(pLicenses))
+                end
             end
         end
     end

@@ -1,5 +1,6 @@
 local MoveUI = {}
-require('mods.MoveUI.scripts.lib.serialize')
+include('data/scripts/lib/serialize')
+local Azimuth = include ("data/scripts/lib/azimuthlib-basic")
 
 MoveUI.Serialize = serialize
 
@@ -60,19 +61,35 @@ function MoveUI.GetVariable(title,defaults)
 end
 
 function MoveUI.LoadVariables()
-    local file,err = io.open( "MoveUIVariables.lua", "r" )
-    if err then return _,err end
-    local rtn = loadstring(file:read("*a"))()
-    file:close()
-    return rtn, err
+    -- local file,err = io.open( "moddata/MoveUI/MoveUIVariables.lua", "r" )
+    -- if err then return _,err end
+    -- local rtn = loadstring(file:read("*a"))()
+    -- file:close()
+    -- return rtn, err
+
+    local configOptions = {
+        _version = {default = "2.2.2", comment = "DO NOT TOUCH THIS."}
+    }
+
+    local serverConfig, isModified = Azimuth.loadConfig("MoveUI", configOptions, true)
+    if isModified then
+        Azimuth.saveConfig("MoveUI", serverConfig, configOptions, true)
+    end
+    return serverConfig, nil
 end
 
 function MoveUI.SaveVariables(tbl)
-    local file,err = io.open( "MoveUIVariables.lua", "wb" )
-    if err then return err end
-    file:write( MoveUI.Serialize(tbl) )
-    file:close()
-    return true
+    -- local file,err = io.open( "moddata/MoveUI/MoveUIVariables.lua", "wb" )
+    -- if err then return err end
+    -- file:write( MoveUI.Serialize(tbl) )
+    -- file:close()
+    -- return true
+
+    -- @usage local configOptions = {
+    --   WindowWidth = {300, min = 100, max = 600, round = -1, comment = "UI window width"}
+    -- }
+    -- Azimuth.saveConfig("MainConfigFile", modConfig, configOptions, false, "MyMod")
+    Azimuth.saveConfig("MoveUI", tbl, nil, true)
 end
 
 function MoveUI.ClearValue(factionIndex, ValueName)

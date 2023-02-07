@@ -1,6 +1,6 @@
 --MoveUI - Dirtyredz|David McClain
-package.path = package.path .. ";mods/MoveUI/scripts/lib/?.lua"
-local MoveUI = require('MoveUI')
+package.path = package.path .. ";scripts/lib/?.lua"
+local MoveUI = include('data/scripts/lib/MoveUI')
 
 -- namespace ObjectDetector
 ObjectDetector = {}
@@ -161,9 +161,9 @@ function ObjectDetector.detect()
   if not ship then return end
   if ship:hasScript("systems/valuablesdetector") then
 
-    local ret, data = ship:invokeFunction("scripts/systems/valuablesdetector.lua",'secure')
+    local ret, data = ship:invokeFunction("data/scripts/systems/valuablesdetector.lua",'secure')
     local rarity = Rarity(data.rarity) or Rarity(0)
-    local ret, detections, highlightRange = ship:invokeFunction("scripts/systems/valuablesdetector.lua",'getBonuses',data.seed, rarity)
+    local ret, detections, highlightRange = ship:invokeFunction("data/scripts/systems/valuablesdetector.lua",'getBonuses',data.seed, rarity)
 
     local entities = {Sector():getEntitiesByComponent(ComponentType.Scripts)}
     for _, entity in pairs(entities) do

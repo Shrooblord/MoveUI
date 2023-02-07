@@ -1,12 +1,26 @@
 Scrapyard.updateServerOld = Scrapyard.updateServer
 
-require('mods.MoveUI.scripts.lib.serialize')
+include('data/scripts/lib/serialize')
 
 function Scrapyard.updateServer(timeStep)
+    local Data, licenses
 
-    Data = Scrapyard.secure()
-    licenses = Data["licenses"]
-    --local licenses = {}
+    -- compatibility with ScrapyardPlus 2023
+    if Scrapyard.getData then
+        print("getting Scrapyard data...")
+        local Data = Scrapyard.getData()
+        licenses = {}
+        for d in ipairs(Data) do
+            print("index: ".. d)
+            print("data: " .. Data[d])
+            print("facId: " .. Data[d].factionIndex)
+            print("license: " .. Data[d].license)
+            licenses[Data[d].factionIndex] = Data[d].license
+        end
+    else
+        Data = Scrapyard.secure()
+        licenses = Data["licenses"]
+    end
 
     local x,y = Sector():getCoordinates()
     for factionIndex,duration in pairs(licenses) do

@@ -1,10 +1,10 @@
 --MoveUI - Dirtyredz|David McClain
-package.path = package.path .. ";mods/MoveUI/scripts/lib/?.lua"
+package.path = package.path .. ";scripts/lib/?.lua"
 package.path = package.path .. ";data/scripts/lib/?.lua"
-require ("callable")
+include ("callable")
 
-local MoveUI = require('MoveUI')
-require ("utility")
+local MoveUI = include('data/scripts/lib/MoveUI')
+include ("utility")
 
 -- namespace ScrapyardLicenses
 ScrapyardLicenses = {}

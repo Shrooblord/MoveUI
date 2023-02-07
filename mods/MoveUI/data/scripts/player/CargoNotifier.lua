@@ -1,6 +1,6 @@
 --MoveUI - Dirtyredz|David McClain
-package.path = package.path .. ";mods/MoveUI/scripts/lib/?.lua"
-local MoveUI = require('MoveUI')
+package.path = package.path .. ";scripts/lib/?.lua"
+local MoveUI = include('data/scripts/lib/MoveUI')
 
 -- namespace CargoNotifier
 CargoNotifier = {}

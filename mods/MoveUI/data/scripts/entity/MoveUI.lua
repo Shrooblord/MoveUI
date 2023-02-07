@@ -1,19 +1,18 @@
 package.path = package.path .. ";data/scripts/lib/?.lua"
-require ("stringutility")
-require ("utility")
-require ("callable")
+include ("stringutility")
+include ("utility")
+include ("callable")
 
-package.path = package.path .. ";mods/MoveUI/scripts/lib/?.lua"
-local MoveUI = require('MoveUI')
+local MoveUI = include('data/scripts/lib/MoveUI')
 
 -- Don't remove or alter the following comment, it tells the game the namespace this script lives in. If you remove it, the script will break.
 -- namespace MoveUIOptions
 MoveUIOptions = {}
 
 --For EXTERNAL configuration files
-package.path = package.path .. ";mods/MoveUI/config/?.lua"
+package.path = package.path .. ";data/scripts/config/?.lua"
 MoveUIConfig = nil
-exsist, MoveUIConfig = pcall(require, 'MoveUIConfig')
+exsist, MoveUIConfig = pcall(include, 'MoveUIConfig')
 
 MoveUIOptions.HudList = MoveUIConfig.HudList or {}
 
@@ -93,7 +92,7 @@ function MoveUIOptions.initUI()
     for index,HudFile in pairs(MoveUIOptions.HudList) do
       if HudFile.FileName then
         --Get the UI's File and all its functions.
-        local exsist, UIFile = pcall(require, 'mods.MoveUI.scripts.player.'..HudFile.FileName)
+        local exsist, UIFile = pcall(include, 'data/scripts/player/'..HudFile.FileName)
         if exsist and UIFile.buildTab then
           --Check and store the UI's onShowWindow functions
           if UIFile.onShowWindow then table.insert(ShowWindowFuncs,UIFile.onShowWindow) end
@@ -134,8 +133,8 @@ end
 --Set the UI's Options to the players data
 function MoveUIOptions.clearValue(FactionIndex,ValueName,PlayerIndex)
   MoveUI.ClearValue(FactionIndex,ValueName)
-  Player(PlayerIndex):removeScript('mods/MoveUI/scripts/player/ScrapyardLicenses.lua')
-  Player(PlayerIndex):addScript('mods/MoveUI/scripts/player/ScrapyardLicenses.lua')
+  Player(PlayerIndex):removeScript('ScrapyardLicenses.lua')
+  Player(PlayerIndex):addScript('data/scripts/player/ScrapyardLicenses.lua')
 end
 
 function MoveUIOptions.onShowWindow()
@@ -143,7 +142,7 @@ function MoveUIOptions.onShowWindow()
     MoveAllCheckbox.checked = true
   end
   for _,checkbox in pairs(UILabels) do
-    if Player():hasScript('mods/MoveUI/scripts/player/'..MoveUIOptions.HudList[checkbox.hudIndex].FileName..'.lua') then
+    if Player():hasScript('data/scripts/player/'..MoveUIOptions.HudList[checkbox.hudIndex].FileName..'.lua') then
       checkbox.OnOff.checked = true
     else
       checkbox.OnOff.checked = false
@@ -197,14 +196,14 @@ function MoveUIOptions.onEnableUI(checkbox, value, hudIndex)
     local hudOptions = MoveUIOptions.HudList[hudIndex]
     if value then
       if hudOptions.Restriction(player) then
-        player:addScriptOnce("mods/MoveUI/scripts/player/"..hudOptions.FileName..".lua")
+        player:addScriptOnce("data/scripts/player/"..hudOptions.FileName..".lua")
       else
-        player:removeScript("mods/MoveUI/scripts/player/"..hudOptions.FileName..".lua")
+        player:removeScript("data/scripts/player/"..hudOptions.FileName..".lua")
         player:sendChatMessage('MoveUI', 1, "You do not have permission to do that!")
         invokeClientFunction(player, 'onShowWindow')
       end
       return
     end
-    player:removeScript("mods/MoveUI/scripts/player/"..hudOptions.FileName..".lua")
+    player:removeScript("data/scripts/player/"..hudOptions.FileName..".lua")
 end
 callable(MoveUIOptions, "onEnableUI")

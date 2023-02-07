@@ -1,9 +1,9 @@
 local MoveUIConfig = {}
-MoveUIConfig.Author = "Dirtyredz"
+MoveUIConfig.Author = "Shrooblord_and_Dirtyredz"
 MoveUIConfig.ModName = "[MoveUI]"
 
 MoveUIConfig.version = {
-    major=2, minor=2, patch = 1,
+    major=2, minor=2, patch = 2,
     string = function()
         return  Config.version.major .. '.' ..
                 Config.version.minor .. '.' ..

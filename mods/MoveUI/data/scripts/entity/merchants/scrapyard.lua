@@ -8,6 +8,7 @@ local ScrapyardPlus
 if ModManager():find("ScrapyardPlus") then
 	ScrapyardPlus = true
     include ("serialize")
+    print("[MoveUI] ScrapyardPlus detected! Using alternative licence updating method.")
 end
 
 -- compatibility with ScrapyardPlus 2023

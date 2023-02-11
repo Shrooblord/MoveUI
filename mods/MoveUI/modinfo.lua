@@ -9,7 +9,7 @@ meta =
     description = "Dirtyredz' excellent MoveUI mod, updated for Avorion 2.3.* in February 2023.",
     authors = {"Shrooblord", "David McClain (Dirtyredz)"},
 
-    version = "2.2.2",
+    version = "2.2.3",
     dependencies = {
         {id = "Avorion", min = "2.3.1", max = "2.3.*"},
 
